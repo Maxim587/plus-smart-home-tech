@@ -41,7 +41,6 @@
         <lombok-mapstruct-plugin.version>1.18.32</lombok-mapstruct-plugin.version>
         <lombok-mapstruct-binding-plugin.version>0.2.0</lombok-mapstruct-binding-plugin.version>
         <mapstruct.version>1.6.3</mapstruct.version>
-        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <mapstruct-processor.version>1.6.3</mapstruct-processor.version>
         <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
         <checkstyle-plugin.version>10.3</checkstyle-plugin.version>
@@ -209,6 +208,10 @@
                         </execution>
                     </executions>
                 </plugin>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                    </plugin>
             </plugins>
         </pluginManagement>
     </build>
