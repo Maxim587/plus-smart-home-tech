@@ -126,3 +126,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 /hub-router/
+/checkstyle.xml
+/suppressions.xml
