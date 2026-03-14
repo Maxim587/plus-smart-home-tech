@@ -1,5 +1,6 @@
 package ru.yandex.practicum.kafka;
 
+import lombok.Getter;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 import java.util.Properties;
 
+@Getter
 @Configuration
 public class KafkaProducerConfiguration {
     @Value("${collector.kafka.producer.properties.bootstrap.servers}")
@@ -21,6 +23,10 @@ public class KafkaProducerConfiguration {
     private String valueSerializer;
     @Value("${collector.kafka.producer.properties.client.id}")
     private String clientId;
+    @Value("${collector.kafka.producer.topics.sensors-events}")
+    private String sensorEventTopic;
+    @Value("${collector.kafka.producer.topics.hubs-events}")
+    private String hubEventTopic;
 
 
     @Bean
