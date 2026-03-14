@@ -5,7 +5,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
-import ru.yandex.practicum.dto.device.*;
 import ru.yandex.practicum.grpc.telemetry.event.*;
 import ru.yandex.practicum.kafka.telemetry.event.*;
 
@@ -14,16 +13,6 @@ import java.time.Instant;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface SensorEventMapper {
-
-    LightSensorAvro toLightSensorAvro(LightSensorEvent event);
-
-    SwitchSensorAvro toSwitchSensorAvro(SwitchSensorEvent event);
-
-    MotionSensorAvro toMotionSensorAvro(MotionSensorEvent event);
-
-    ClimateSensorAvro toClimateSensorAvro(ClimateSensorEvent event);
-
-    TemperatureSensorAvro toTemperatureSensorAvro(TemperatureSensorEvent event);
 
     LightSensorAvro mapLightSensorPayloadProtoToAvro(LightSensorProto payload);
 

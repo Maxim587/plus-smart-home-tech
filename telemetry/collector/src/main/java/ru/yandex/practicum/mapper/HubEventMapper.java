@@ -2,10 +2,6 @@ package ru.yandex.practicum.mapper;
 
 import com.google.protobuf.Timestamp;
 import org.mapstruct.*;
-import ru.yandex.practicum.dto.hub.DeviceAddedEvent;
-import ru.yandex.practicum.dto.hub.DeviceRemovedEvent;
-import ru.yandex.practicum.dto.hub.ScenarioAddedEvent;
-import ru.yandex.practicum.dto.hub.ScenarioRemovedEvent;
 import ru.yandex.practicum.grpc.telemetry.event.*;
 import ru.yandex.practicum.kafka.telemetry.event.*;
 
@@ -15,17 +11,6 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface HubEventMapper {
-
-    @Mapping(target = "type", source = "deviceType")
-    DeviceAddedEventAvro toDeviceAddedEventAvro(DeviceAddedEvent event);
-
-    DeviceRemovedEventAvro toDeviceRemovedEventAvro(DeviceRemovedEvent event);
-
-    ScenarioAddedEventAvro toScenarioAddedEventAvro(ScenarioAddedEvent event);
-
-    ScenarioRemovedEventAvro toScenarioRemovedEventAvro(ScenarioRemovedEvent event);
-
-
 
     @ValueMapping(target = MappingConstants.THROW_EXCEPTION, source = "UNRECOGNIZED")
     DeviceAddedEventAvro mapDeviceAddedPayloadProtoToAvro(DeviceAddedEventProto payload);
