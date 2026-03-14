@@ -32,6 +32,7 @@
         <grpc.version>1.63.0</grpc.version>
         <mapstruct-processor.version>1.6.3</mapstruct-processor.version>
         <avro-schemas.version>1.0-SNAPSHOT</avro-schemas.version>
+        <proto-schemas.version>1.0-SNAPSHOT</proto-schemas.version>
 
         <!--       Plugins       -->
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
@@ -97,6 +98,12 @@
                 <groupId>ru.yandex.practicum</groupId>
                 <artifactId>avro-schemas</artifactId>
                 <version>${avro-schemas.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ru.yandex.practicum</groupId>
+                <artifactId>proto-schemas</artifactId>
+                <version>${proto-schemas.version}</version>
             </dependency>
 
             <dependency>

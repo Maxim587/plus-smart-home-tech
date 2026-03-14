@@ -10,8 +10,8 @@ import ru.yandex.practicum.dto.hub.*;
 import ru.yandex.practicum.kafka.TelemetryKafkaProducer;
 import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
-import ru.yandex.practicum.mapper.DeviceEventMapper;
 import ru.yandex.practicum.mapper.HubEventMapper;
+import ru.yandex.practicum.mapper.SensorEventMapper;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class CollectorServiceImpl implements CollectorService {
     private String deviceEventTopic;
     @Value("${collector.kafka.producer.topics.hubs-events}")
     private String hubEventTopic;
-    private final DeviceEventMapper deviceEventMapper;
+    private final SensorEventMapper sensorEventMapper;
     private final HubEventMapper hubEventMapper;
 
     @Override
@@ -38,11 +38,11 @@ public class CollectorServiceImpl implements CollectorService {
 
     private SpecificRecordBase getSensorEventAvroRecord(SensorEvent event) {
         SpecificRecordBase payload = switch (event.getType()) {
-            case LIGHT_SENSOR_EVENT -> deviceEventMapper.toLightSensorAvro((LightSensorEvent) event);
-            case SWITCH_SENSOR_EVENT -> deviceEventMapper.toSwitchSensorAvro((SwitchSensorEvent) event);
-            case MOTION_SENSOR_EVENT -> deviceEventMapper.toMotionSensorAvro((MotionSensorEvent) event);
-            case CLIMATE_SENSOR_EVENT -> deviceEventMapper.toClimateSensorAvro((ClimateSensorEvent) event);
-            case TEMPERATURE_SENSOR_EVENT -> deviceEventMapper.toTemperatureSensorAvro((TemperatureSensorEvent) event);
+            case LIGHT_SENSOR_EVENT -> sensorEventMapper.toLightSensorAvro((LightSensorEvent) event);
+            case SWITCH_SENSOR_EVENT -> sensorEventMapper.toSwitchSensorAvro((SwitchSensorEvent) event);
+            case MOTION_SENSOR_EVENT -> sensorEventMapper.toMotionSensorAvro((MotionSensorEvent) event);
+            case CLIMATE_SENSOR_EVENT -> sensorEventMapper.toClimateSensorAvro((ClimateSensorEvent) event);
+            case TEMPERATURE_SENSOR_EVENT -> sensorEventMapper.toTemperatureSensorAvro((TemperatureSensorEvent) event);
         };
 
         return SensorEventAvro.newBuilder()
