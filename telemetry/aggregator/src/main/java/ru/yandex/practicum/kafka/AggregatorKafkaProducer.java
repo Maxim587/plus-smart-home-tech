@@ -6,12 +6,14 @@ import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.concurrent.Future;
 
 @Getter
 @Slf4j
+@Component
 public class AggregatorKafkaProducer implements AutoCloseable {
     private static final Duration PRODUCER_CLOSE_TIMEOUT = Duration.ofMillis(5L);
     private final Producer<String, SpecificRecordBase> producer;
