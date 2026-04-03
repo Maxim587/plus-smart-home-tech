@@ -1,31 +1,5 @@
 spring:
   application:
     name: aggregator
-  main:
-    banner-mode: off
-
-
-kafka:
-  bootstrap-servers: localhost:9092
-  client.id: telemetry.aggregator
-  topics:
-    sensors-events: telemetry.sensors.v1
-    hubs-events: telemetry.hubs.v1
-    snapshots: telemetry.snapshots.v1
-  consumer:
-    properties:
-      group.id: AggregatorGroup
-      key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value.deserializer: ru.yandex.practicum.kafka.serde.SensorEventDeserializer
-      consume.attempt.timeout.ms: 500
-      auto-offset-reset: earliest
-      enable-auto-commit: false
-  producer:
-    properties:
-      key.serializer: org.apache.kafka.common.serialization.StringSerializer
-      value.serializer: ru.yandex.practicum.kafka.serde.GeneralAvroSerializer
-
-
-logging:
-  level:
-    "org.apache.kafka": ERROR
+  config:
+    import: configserver:http://localhost:8888
