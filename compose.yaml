@@ -40,11 +40,28 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./volumes/postgres:/var/lib/postgresql/data/
+      - ./volumes/postgres/analyzer:/var/lib/postgresql/data/
     environment:
       - POSTGRES_PASSWORD=12345
       - POSTGRES_USER=user
       - POSTGRES_DB=analyzer
+    healthcheck:
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      timeout: 5s
+      interval: 5s
+      retries: 10
+
+  commerce-db:
+    image: postgres:16.1
+    container_name: commerce-db-pg
+    ports:
+      - "6432:5432"
+    volumes:
+      - ./volumes/postgres/commerce:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_USER=user
+      - POSTGRES_DB=commerce
     healthcheck:
       test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
       timeout: 5s
