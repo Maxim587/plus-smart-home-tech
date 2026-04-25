@@ -20,6 +20,7 @@
         <module>infra</module>
         <module>commerce</module>
         <module>infra/config-server</module>
+        <module>infra/discovery-server</module>
     </modules>
 
     <properties>
@@ -47,6 +48,7 @@
         <mapstruct-processor.version>1.6.3</mapstruct-processor.version>
         <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
         <checkstyle-plugin.version>10.3</checkstyle-plugin.version>
+        <interaction-api.version>1.0-SNAPSHOT</interaction-api.version>
     </properties>
 
     <dependencyManagement>
@@ -132,6 +134,13 @@
                 <version>${spring-cloud-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>ru.yandex.practicum</groupId>
+                <artifactId>interaction-api</artifactId>
+                <version>${interaction-api.version}</version>
+                <scope>compile</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

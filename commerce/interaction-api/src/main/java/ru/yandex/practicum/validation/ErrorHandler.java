@@ -1,0 +1,93 @@
+package ru.yandex.practicum.validation;
+
+import jakarta.validation.ValidationException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.MissingRequestValueException;
+import ru.yandex.practicum.exceptions.*;
+
+import java.util.List;
+
+@Slf4j
+@RestControllerAdvice
+public class ErrorHandler {
+
+    @ExceptionHandler(MissingRequestValueException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleMissingRequestValue(final MissingRequestValueException e) {
+        log.debug(e.getDetailMessageCode());
+        return new ApiError(e.getDetailMessageCode(), "Отсутствуют необходимые параметры запроса", HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ApiError handleValidationExceptions(MethodArgumentNotValidException e) {
+        List<String> violations = e.getBindingResult().getFieldErrors().stream()
+                .map(error -> "field: " + error.getField() + "; message: " + error.getDefaultMessage())
+                .toList();
+        log.debug(e.getMessage());
+        return new ApiError("Ошибка валидации данных", "Некорректные параметры запроса", HttpStatus.BAD_REQUEST, violations);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleNotFound(final NotFoundException e) {
+        log.debug(e.getMessage());
+        return new ApiError(e.getMessage(), "Объект не найден", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NoProductsInShoppingCartException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleNotFound(final NoProductsInShoppingCartException e) {
+        log.debug(e.getMessage());
+        return new ApiError(e.getMessage(), "Объект не найден", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NoSpecifiedProductInWarehouseException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleNotFound(final NoSpecifiedProductInWarehouseException e) {
+        log.debug(e.getMessage());
+        return new ApiError(e.getMessage(), "Объект не найден", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleNotFound(final ProductNotFoundException e) {
+        log.debug(e.getMessage());
+        return new ApiError(e.getMessage(), "Объект не найден", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NotAuthorizedUserException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ApiError handleNotFound(final NotAuthorizedUserException e) {
+        log.debug(e.getMessage());
+        return new ApiError(e.getMessage(), "Ошибка авторизации", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ProductInShoppingCartLowQuantityInWarehouseException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleNotFound(final ProductInShoppingCartLowQuantityInWarehouseException e) {
+        log.debug(e.getMessage());
+        return new ApiError(e.getMessage(), "Ошибка запроса", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(SpecifiedProductAlreadyInWarehouseException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleNotFound(final SpecifiedProductAlreadyInWarehouseException e) {
+        log.debug(e.getMessage());
+        return new ApiError(e.getMessage(), "Ошибка запроса", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleConditionsConflict(final ValidationException e) {
+        log.debug(e.getMessage());
+        return new ApiError(e.getMessage(), "Нарушение условий выполнения запроса", HttpStatus.BAD_REQUEST);
+    }
+
+}
