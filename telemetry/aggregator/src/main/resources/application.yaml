@@ -5,9 +5,15 @@ spring:
     import: "configserver:"
   cloud:
     config:
+      fail-fast: true
+      retry:
+        useRandomPolicy: true
+        max-interval: 20000
+        max-attempts: 30
       discovery:
-        enabled: true
         serviceId: config-server
+        enabled: true
+      uri: ""
 
 eureka:
   instance:
