@@ -7,12 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.dto.cart.ChangeProductQuantityRequest;
 import ru.yandex.practicum.dto.cart.ShoppingCartDto;
+import ru.yandex.practicum.feign.fallback.CartClientFallback;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-@FeignClient(name = "shopping-cart")
+@FeignClient(name = "shopping-cart", fallback = CartClientFallback.class)
 public interface CartClient {
 
     @GetMapping

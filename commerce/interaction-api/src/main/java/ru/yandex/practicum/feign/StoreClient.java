@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.dto.store.ProductDto;
 import ru.yandex.practicum.dto.enums.ProductCategory;
 import ru.yandex.practicum.dto.enums.QuantityState;
+import ru.yandex.practicum.feign.fallback.StoreClientFallback;
 
 import java.util.UUID;
 
-@FeignClient(name = "shopping-store")
+@FeignClient(name = "shopping-store", fallback = StoreClientFallback.class)
 public interface StoreClient {
     @GetMapping
     Page<ProductDto> getProducts(@RequestParam ProductCategory category, Pageable pageable);

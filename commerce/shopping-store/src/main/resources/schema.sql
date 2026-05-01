@@ -1,7 +1,6 @@
-DROP SCHEMA IF EXISTS store CASCADE;
-CREATE SCHEMA store;
+DROP TABLE IF EXISTS store;
 
-CREATE TABLE IF NOT EXISTS store.product (
+CREATE TABLE IF NOT EXISTS product (
     id              UUID PRIMARY KEY,
     name            VARCHAR(1000) NOT NULL,
     description     VARCHAR(10000) NOT NULL,

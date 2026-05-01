@@ -1,7 +1,6 @@
-DROP SCHEMA IF EXISTS warehouse CASCADE;
-CREATE SCHEMA warehouse;
+DROP TABLE IF EXISTS product;
 
-CREATE TABLE IF NOT EXISTS warehouse.product (
+CREATE TABLE IF NOT EXISTS product (
     id          UUID PRIMARY KEY,
     fragile     BOOLEAN,
     width       DOUBLE PRECISION NOT NULL,

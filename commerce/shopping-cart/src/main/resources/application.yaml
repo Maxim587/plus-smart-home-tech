@@ -14,6 +14,9 @@ spring:
         serviceId: config-server
         enabled: true
       uri: ""
+    openfeign:
+      circuitbreaker:
+        enabled: true
 
 eureka:
   instance:

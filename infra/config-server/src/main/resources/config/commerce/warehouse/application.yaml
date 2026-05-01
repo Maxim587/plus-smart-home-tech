@@ -15,7 +15,17 @@ spring:
     init.mode: always
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:6432/commerce
-    schema: warehouse
+    url: jdbc:postgresql://localhost:5433/warehouse
     username: user
     password: 12345
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      warehouse:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true

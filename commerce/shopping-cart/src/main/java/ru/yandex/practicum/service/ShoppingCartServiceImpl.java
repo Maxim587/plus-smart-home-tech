@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.dto.cart.ChangeProductQuantityRequest;
 import ru.yandex.practicum.dto.cart.ShoppingCartDto;
+import ru.yandex.practicum.exceptions.InternalServerErrorException;
 import ru.yandex.practicum.exceptions.NoProductsInShoppingCartException;
 import ru.yandex.practicum.exceptions.NotAuthorizedUserException;
 import ru.yandex.practicum.exceptions.NotFoundException;
@@ -15,10 +16,7 @@ import ru.yandex.practicum.model.ShoppingCart;
 import ru.yandex.practicum.repository.CartProductRepository;
 import ru.yandex.practicum.repository.CartRepository;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +45,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart cart = getNewOrExistingUsersShoppingCart(username);
         ShoppingCartDto dto = cartMapper.mapShoppingCartToShoppingCartDto(cart, null);
         dto.setProducts(products);
-        warehouseClient.checkProductQuantityEnoughForShoppingCart(dto);
+        Optional.ofNullable(warehouseClient.checkProductQuantityEnoughForShoppingCart(dto))
+                .orElseThrow(() -> new InternalServerErrorException("Сервис временно недоступен"));
         List<ProductInCart> productsInCart = cartMapper.mapProductsMapToProductsInCartList(products, cart);
         cartProductRepository.saveAll(productsInCart);
         return dto;

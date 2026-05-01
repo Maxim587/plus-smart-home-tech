@@ -90,4 +90,11 @@ public class ErrorHandler {
         return new ApiError(e.getMessage(), "Нарушение условий выполнения запроса", HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(InternalServerErrorException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ApiError handleInternalServerError(final InternalServerErrorException e) {
+        log.error(e.getMessage());
+        return new ApiError(e.getMessage(), "Ошибка сервера", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
