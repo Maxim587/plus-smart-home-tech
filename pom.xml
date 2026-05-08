@@ -19,6 +19,8 @@
         <module>telemetry</module>
         <module>infra</module>
         <module>commerce</module>
+        <module>infra/config-server</module>
+        <module>infra/discovery-server</module>
     </modules>
 
     <properties>
@@ -33,6 +35,7 @@
         <mapstruct-processor.version>1.6.3</mapstruct-processor.version>
         <avro-schemas.version>1.0-SNAPSHOT</avro-schemas.version>
         <proto-schemas.version>1.0-SNAPSHOT</proto-schemas.version>
+        <spring-cloud-dependencies.version>2023.0.3</spring-cloud-dependencies.version>
 
         <!--       Plugins       -->
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
@@ -45,6 +48,7 @@
         <mapstruct-processor.version>1.6.3</mapstruct-processor.version>
         <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
         <checkstyle-plugin.version>10.3</checkstyle-plugin.version>
+        <interaction-api.version>1.0-SNAPSHOT</interaction-api.version>
     </properties>
 
     <dependencyManagement>
@@ -122,6 +126,21 @@
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${mapstruct-processor.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>ru.yandex.practicum</groupId>
+                <artifactId>interaction-api</artifactId>
+                <version>${interaction-api.version}</version>
+                <scope>compile</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

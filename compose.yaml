@@ -40,11 +40,62 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./volumes/postgres:/var/lib/postgresql/data/
+      - ./volumes/postgres/analyzer:/var/lib/postgresql/data/
     environment:
       - POSTGRES_PASSWORD=12345
       - POSTGRES_USER=user
       - POSTGRES_DB=analyzer
+    healthcheck:
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      timeout: 5s
+      interval: 5s
+      retries: 10
+
+  warehouse-db:
+    image: postgres:16.1
+    container_name: warehouse-db-pg
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./volumes/postgres/warehouse:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_USER=user
+      - POSTGRES_DB=warehouse
+    healthcheck:
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      timeout: 5s
+      interval: 5s
+      retries: 10
+
+  shopping-store-db:
+    image: postgres:16.1
+    container_name: shopping-store-db-pg
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./volumes/postgres/shopping-store:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_USER=user
+      - POSTGRES_DB=shopping-store
+    healthcheck:
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      timeout: 5s
+      interval: 5s
+      retries: 10
+
+  shopping-cart-db:
+    image: postgres:16.1
+    container_name: shopping-cart-db-pg
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./volumes/postgres/shopping-cart:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_USER=user
+      - POSTGRES_DB=shopping-cart
     healthcheck:
       test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
       timeout: 5s
