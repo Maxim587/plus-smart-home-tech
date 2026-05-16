@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-@FeignClient(name = "shopping-cart", fallback = CartClientFallback.class)
+@FeignClient(name = "shopping-cart", path = "/api/v1/shopping-cart", fallback = CartClientFallback.class)
 public interface CartClient {
 
     @GetMapping

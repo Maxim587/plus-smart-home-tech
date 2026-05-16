@@ -1,4 +1,4 @@
-package ru.yandex.practicum.dto.warehouse;
+package ru.yandex.practicum.dto.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -14,7 +14,7 @@ import ru.yandex.practicum.feign.fallback.StoreClientFallback;
 
 import java.util.UUID;
 
-@FeignClient(name = "shopping-store", fallback = StoreClientFallback.class)
+@FeignClient(name = "shopping-store", path = "/api/v1/shopping-store", fallback = StoreClientFallback.class)
 public interface StoreClient {
     @GetMapping
     Page<ProductDto> getProducts(@RequestParam ProductCategory category, Pageable pageable);
