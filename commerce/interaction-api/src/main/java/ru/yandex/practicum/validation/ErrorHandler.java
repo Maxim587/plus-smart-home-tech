@@ -4,7 +4,6 @@ import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -34,58 +33,41 @@ public class ErrorHandler {
         return new ApiError("Ошибка валидации данных", "Некорректные параметры запроса", HttpStatus.BAD_REQUEST, violations);
     }
 
-    @ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler(NotAuthorizedUserException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ApiError handleNotAuthorized(final NotAuthorizedUserException e) {
+        log.debug(e.getMessage());
+        return new ApiError(e.getMessage(), "Ошибка авторизации", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleConditionsConflict(final ValidationException e) {
+        log.debug(e.getMessage());
+        return new ApiError(e.getMessage(), "Нарушение условий выполнения запроса", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({
+            NotFoundException.class,
+            NoDeliveryFoundException.class,
+            ProductNotFoundException.class,
+    })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handleNotFound(final NotFoundException e) {
         log.debug(e.getMessage());
         return new ApiError(e.getMessage(), "Объект не найден", HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(NoProductsInShoppingCartException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handleNotFound(final NoProductsInShoppingCartException e) {
-        log.debug(e.getMessage());
-        return new ApiError(e.getMessage(), "Объект не найден", HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(NoSpecifiedProductInWarehouseException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handleNotFound(final NoSpecifiedProductInWarehouseException e) {
-        log.debug(e.getMessage());
-        return new ApiError(e.getMessage(), "Объект не найден", HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(ProductNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handleNotFound(final ProductNotFoundException e) {
-        log.debug(e.getMessage());
-        return new ApiError(e.getMessage(), "Объект не найден", HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(NotAuthorizedUserException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ApiError handleNotFound(final NotAuthorizedUserException e) {
-        log.debug(e.getMessage());
-        return new ApiError(e.getMessage(), "Ошибка авторизации", HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(ProductInShoppingCartLowQuantityInWarehouseException.class)
+    @ExceptionHandler({
+            NoSpecifiedProductInWarehouseException.class,
+            SpecifiedProductAlreadyInWarehouseException.class,
+            NoOrderFoundException.class,
+            NoProductsInShoppingCartException.class,
+            NotEnoughInfoInOrderToCalculateException.class,
+            ProductInShoppingCartLowQuantityInWarehouseException.class
+    })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleNotFound(final ProductInShoppingCartLowQuantityInWarehouseException e) {
-        log.debug(e.getMessage());
-        return new ApiError(e.getMessage(), "Ошибка запроса", HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(SpecifiedProductAlreadyInWarehouseException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleNotFound(final SpecifiedProductAlreadyInWarehouseException e) {
-        log.debug(e.getMessage());
-        return new ApiError(e.getMessage(), "Ошибка запроса", HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(ValidationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleConditionsConflict(final ValidationException e) {
+    public ApiError handleCommonBadRequest(final CommonBadRequestException e) {
         log.debug(e.getMessage());
         return new ApiError(e.getMessage(), "Нарушение условий выполнения запроса", HttpStatus.BAD_REQUEST);
     }

@@ -1,0 +1,108 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    reactor:
+      netty: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: INFO
+        http:
+          server:
+            reactive: INFO
+
+spring:
+  cloud:
+    gateway:
+      discovery.locator.enabled: true
+      routes:
+        - id: warehouse_service_route
+          uri: lb://warehouse
+          predicates:
+            - Path=/warehouse/**
+          filters:
+            - PrefixPath=/api/v1
+            - name: CircuitBreaker
+              args:
+                name: FallbackController
+                fallbackUri: forward:/fallback
+
+        - id: shopping_cart_service_route
+          uri: lb://shopping-cart
+          predicates:
+            - Path=/shopping-cart/**
+          filters:
+            - PrefixPath=/api/v1
+            - name: CircuitBreaker
+              args:
+                name: FallbackController
+                fallbackUri: forward:/fallback
+
+        - id: shopping_store_service_route
+          uri: lb://shopping-store
+          predicates:
+            - Path=/shopping-store/**
+          filters:
+            - PrefixPath=/api/v1
+            - name: Retry
+              args:
+                retries: 3
+                exceptions:
+                  - ru.yandex.practicum.exceptions.ProductNotFoundException
+                methods: GET
+                backoff:
+                  firstBackoff: 10ms
+                  maxBackoff: 50ms
+                  factor: 2
+                  basedOnPreviousValue: false
+            - name: CircuitBreaker
+              args:
+                name: FallbackController
+                fallbackUri: forward:/fallback
+
+        - id: order_service_route
+          uri: lb://order
+          predicates:
+            - Path=/order/**
+          filters:
+            - PrefixPath=/api/v1
+            - name: CircuitBreaker
+              args:
+                name: FallbackController
+                fallbackUri: forward:/fallback
+
+        - id: payment_service_route
+          uri: lb://payment
+          predicates:
+            - Path=/payment/**
+          filters:
+            - PrefixPath=/api/v1
+            - name: CircuitBreaker
+              args:
+                name: FallbackController
+                fallbackUri: forward:/fallback
+
+        - id: delivery_service_route
+          uri: lb://delivery
+          predicates:
+            - Path=/delivery/**
+          filters:
+            - PrefixPath=/api/v1
+            - name: CircuitBreaker
+              args:
+                name: FallbackController
+                fallbackUri: forward:/fallback
+
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      gateway:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
