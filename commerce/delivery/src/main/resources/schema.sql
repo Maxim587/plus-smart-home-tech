@@ -3,11 +3,11 @@ DROP TABLE IF EXISTS delivery CASCADE;
 
 CREATE TABLE IF NOT EXISTS address (
     id      UUID PRIMARY KEY,
-    country TEXT,
-    city    TEXT,
-    street  TEXT,
-    house   TEXT,
-    flat    TEXT
+    country VARCHAR(100),
+    city    VARCHAR(50),
+    street  VARCHAR(100),
+    house   VARCHAR(50),
+    flat    VARCHAR(50)
 );
 
 CREATE TABLE IF NOT EXISTS delivery (
